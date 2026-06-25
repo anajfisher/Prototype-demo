@@ -79,6 +79,12 @@
       <span style="flex:1;">Help Center</span>
     </button>
 
+    <!-- clinic settings -->
+    <button onClick="{{ onClinic }}" style="{{ clinicStyle }}" style-hover="{{ clinicHover }}">
+      <i data-lucide="sliders-horizontal" style="width:16px; height:16px; flex-shrink:0; color:{{ clinicIconColor }};"></i>
+      <span style="flex:1;">Clinic Settings</span>
+    </button>
+
     <!-- settings -->
     <button onClick="{{ onSettings }}" style="{{ settingsStyle }}" style-hover="{{ settingsHover }}">
       <i data-lucide="settings" style="width:16px; height:16px; flex-shrink:0; color:{{ settingsIconColor }};"></i>
@@ -144,12 +150,11 @@ class Component extends DCLogic {
 
   renderVals() {
     const topDefs = [
-      { id:'home', icon:'infinity', label:'Home', url:'Home.html' },
-      { id:'dashboard', icon:'layout-grid', label:'Dashboard', url:'Dashboard.html' },
-      { id:'campaign', icon:'megaphone', label:'Campaigns', url:'Campaigns.html' },
+      { id:'home', icon:'infinity', label:'Home', url:'Home.dc.html' },
+      { id:'dashboard', icon:'layout-grid', label:'Dashboard', url:'Dashboard.dc.html' },
+      { id:'campaign', icon:'megaphone', label:'Campaigns', url:'Campaigns.dc.html' },
       { id:'conversations', icon:'message-circle', label:'Contact Center', url:'Conversations.html' },
       { id:'contacts', icon:'contact-round', label:'Contacts', url:'Contacts.html' },
-      { id:'clinicsettings', icon:'sliders-horizontal', label:'Clinic Settings', url:'ClinicSettings.html' },
       { id:'advanced', icon:'layers', label:'Advanced Tools', isAccordion:true, children:[
         { id:'email', icon:'at-sign', label:'Email & socials' },
         { id:'reviews', icon:'star', label:'Manage reviews' },
@@ -206,6 +211,7 @@ class Component extends DCLogic {
 
     const settingsActive = active === 'settings';
     const helpActive = active === 'helpcenter';
+    const clinicActive = active === 'clinicsettings';
     return {
       items,
       settingsStyle: this.itemStyle(settingsActive),
@@ -215,6 +221,10 @@ class Component extends DCLogic {
       helpHover: this.hoverStyle(helpActive),
       helpIconColor: helpActive ? '#6c65ea' : '#6e6b86',
       onHelp: () => { window.location.href = 'HelpCenter.html'; },
+      clinicStyle: this.itemStyle(clinicActive),
+      clinicHover: this.hoverStyle(clinicActive),
+      clinicIconColor: clinicActive ? '#6c65ea' : '#6e6b86',
+      onClinic: () => { window.location.href = 'ClinicSettings.html'; },
       wsHover: { background: 'rgba(255,255,255,0.9)' },
       onSettings: () => this.setState({ active: 'settings' }),
     };
