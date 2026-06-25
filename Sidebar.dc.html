@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin:0; font-family:'Geist',system-ui,sans-serif; background-color:#f5f4fc; background-image:radial-gradient(rgba(108,101,234,0.05) 1px, transparent 1px); background-size:24px 24px; }
+  *, *::before, *::after { box-sizing:border-box; }
+</style>
+</helmet>
+<div style="min-height:100vh; display:flex; align-items:flex-start; background:transparent; padding:8px;">
+  <aside style="position:relative; width:212px; background:rgba(255,255,255,0.72); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(234,233,243,0.9); border-radius:8px; box-shadow:0 1px 2px -1px rgba(27,26,46,.06), 0 6px 16px -6px rgba(27,26,46,.10); padding:16px 12px 12px; display:flex; flex-direction:column; height:calc(100vh - 16px);">
+
+    <!-- header -->
+    <div style="padding:4px 6px 0;">
+      <img src="assets/logo-foreverbooked.png" alt="foreverbooked" style="width:100%; max-width:182px; height:auto; display:block;">
+    </div>
+
+    <!-- workspace switcher -->
+    <div style="margin-top:14px; display:flex; align-items:center; gap:9px; padding:8px 10px; border:1px solid #eae9f3; border-radius:9px; background:rgba(255,255,255,0.6); cursor:pointer;" style-hover="{{ wsHover }}">
+      <span style="display:flex; width:28px; height:28px; flex-shrink:0; align-items:center; justify-content:center; border-radius:7px; background:#f1eefe;">
+        <i data-lucide="map-pin" style="width:15px; height:15px; color:#6c65ea;"></i>
+      </span>
+      <div style="flex:1; min-width:0; line-height:1.2;">
+        <div style="font-size:13px; font-weight:600; color:#1b1a2e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">C3 Wellness Spa</div>
+        <div style="font-size:11px; color:#9b98b3;">McKinney, Texas</div>
+      </div>
+      <i data-lucide="chevrons-up-down" style="width:15px; height:15px; color:#9b98b3; flex-shrink:0;"></i>
+    </div>
+
+    <!-- search -->
+    <div style="margin-top:8px; display:flex; align-items:center; gap:8px; padding:7px 10px; border:1px solid #eae9f3; border-radius:9px; background:rgba(255,255,255,0.45); cursor:text;">
+      <i data-lucide="search" style="width:14px; height:14px; color:#9b98b3;"></i>
+      <span style="flex:1; font-size:13px; color:#9b98b3;">Search</span>
+      <span class="n" style="display:inline-flex; align-items:center; padding:2px 6px; border-radius:5px; background:#f5f5fa; font-size:10px; font-weight:600; color:#9b98b3;">⌘K</span>
+      <i data-lucide="zap" style="width:14px; height:14px; color:#16a36a;"></i>
+    </div>
+
+    <!-- nav -->
+    <nav style="margin-top:14px; display:flex; flex-direction:column; gap:1px;">
+      <sc-for list="{{ items }}" as="item" hint-placeholder-count="7">
+        <button onClick="{{ item.onClick }}" style="{{ item.style }}" style-hover="{{ item.hoverStyle }}">
+          <sc-if value="{{ item.isActive }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute; left:-7px; top:50%; transform:translateY(-50%); width:3px; height:18px; border-radius:3px; background:#6c65ea;"></span>
+          </sc-if>
+          <i data-lucide="{{ item.icon }}" style="width:16px; height:16px; flex-shrink:0; color:{{ item.iconColor }};"></i>
+          <span style="flex:1;">{{ item.label }}</span>
+          <sc-if value="{{ item.chevronIcon }}" hint-placeholder-val="{{ false }}">
+            <i data-lucide="{{ item.chevronIcon }}" style="width:15px; height:15px; color:#9b98b3; transition:transform .15s ease;"></i>
+          </sc-if>
+        </button>
+        <sc-if value="{{ item.showChildren }}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{ item.children }}" as="child" hint-placeholder-count="4">
+            <button onClick="{{ child.onClick }}" style="{{ child.style }}" style-hover="{{ child.hoverStyle }}">
+              <sc-if value="{{ child.isActive }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute; left:-7px; top:50%; transform:translateY(-50%); width:3px; height:18px; border-radius:3px; background:#6c65ea;"></span>
+              </sc-if>
+              <i data-lucide="{{ child.icon }}" style="width:15px; height:15px; flex-shrink:0; color:{{ child.iconColor }};"></i>
+              <span style="flex:1;">{{ child.label }}</span>
+            </button>
+          </sc-for>
+        </sc-if>
+      </sc-for>
+    </nav>
+
+    <div style="flex:1; min-height:24px;"></div>
+
+    <!-- help center -->
+    <button onClick="{{ onHelp }}" style="{{ helpStyle }}" style-hover="{{ helpHover }}">
+      <i data-lucide="life-buoy" style="width:16px; height:16px; flex-shrink:0; color:{{ helpIconColor }};"></i>
+      <span style="flex:1;">Help Center</span>
+    </button>
+
+    <!-- settings -->
+    <button onClick="{{ onSettings }}" style="{{ settingsStyle }}" style-hover="{{ settingsHover }}">
+      <i data-lucide="settings" style="width:16px; height:16px; flex-shrink:0; color:{{ settingsIconColor }};"></i>
+      <span style="flex:1;">Settings</span>
+    </button>
+
+    <div style="text-align:center; margin-top:12px; padding-bottom:2px;">
+      <a href="#" style="font-size:11px; color:#9b98b3; text-decoration:none;">Privacy Policy</a>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:326,&quot;height&quot;:840},&quot;active&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { active: null, advancedOpen: null };
+
+  baseBtn() {
+    return {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '11px',
+      width: '100%',
+      padding: '7px 9px',
+      border: 'none',
+      borderRadius: '6px',
+      background: 'transparent',
+      cursor: 'pointer',
+      textAlign: 'left',
+      fontFamily: 'inherit',
+      fontSize: '13px',
+      fontWeight: 500,
+      color: '#3a3756',
+      transition: 'background .15s ease, color .15s ease'
+    };
+  }
+
+  itemStyle(isActive) {
+    const s = this.baseBtn();
+    if (isActive) {
+      s.background = '#FFFFFF';
+      s.color = '#1b1a2e';
+      s.fontWeight = 600;
+      s.boxShadow = '0 1px 2px -1px rgba(27,26,46,.06), 0 6px 16px -6px rgba(27,26,46,.10)';
+      s.border = '1px solid #eae9f3';
+    }
+    return s;
+  }
+
+  hoverStyle(isActive) {
+    return isActive
+      ? { background: '#FFFFFF' }
+      : { background: '#FFFFFF', boxShadow: '0 2px 8px rgba(27,26,46,0.06)' };
+  }
+
+  componentDidMount() { this._icons(); }
+  componentDidUpdate() { this._icons(); }
+  _icons() {
+    if (window.lucide && window.lucide.createIcons) {
+      requestAnimationFrame(() => window.lucide.createIcons());
+    }
+  }
+
+  renderVals() {
+    const topDefs = [
+      { id:'home', icon:'infinity', label:'Home', url:'Home.html' },
+      { id:'dashboard', icon:'layout-grid', label:'Dashboard', url:'Dashboard.html' },
+      { id:'campaign', icon:'megaphone', label:'Campaigns', url:'Campaigns.html' },
+      { id:'conversations', icon:'message-circle', label:'Contact Center', url:'Conversations.html' },
+      { id:'contacts', icon:'contact-round', label:'Contacts', url:'Contacts.html' },
+      { id:'clinicsettings', icon:'sliders-horizontal', label:'Clinic Settings', url:'ClinicSettings.html' },
+      { id:'advanced', icon:'layers', label:'Advanced Tools', isAccordion:true, children:[
+        { id:'email', icon:'at-sign', label:'Email & socials' },
+        { id:'reviews', icon:'star', label:'Manage reviews' },
+        { id:'calendar', icon:'calendar', label:'Calendar' },
+        { id:'payments', icon:'credit-card', label:'Payments' },
+        { id:'sites', icon:'globe', label:'Sites' },
+        { id:'automations', icon:'workflow', label:'Automations' },
+      ]},
+    ];
+    const active = this.state.active || this.props.active || 'home';
+    const advChildIds = ['sites','calendar','automations','email','payments','reviews'];
+    const childActive = advChildIds.includes(active);
+    const open = this.state.advancedOpen == null ? childActive : this.state.advancedOpen;
+
+    const mkChild = (c) => {
+      const isActive = active === c.id;
+      const s = this.itemStyle(isActive);
+      s.paddingLeft = '32px';
+      s.gap = '10px';
+      return {
+        ...c, isActive,
+        iconColor: isActive ? '#6c65ea' : '#6e6b86',
+        style: s,
+        hoverStyle: this.hoverStyle(isActive),
+        onClick: () => this.setState({ active: c.id }),
+      };
+    };
+
+    const items = topDefs.map(d => {
+      if (d.isAccordion) {
+        const parentHi = childActive && !open;
+        return {
+          ...d,
+          isActive: false,
+          iconColor: (open || childActive) ? '#6c65ea' : '#6e6b86',
+          style: this.itemStyle(parentHi),
+          hoverStyle: this.hoverStyle(parentHi),
+          chevronIcon: open ? 'chevron-down' : 'chevron-right',
+          showChildren: open,
+          children: d.children.map(mkChild),
+          onClick: () => this.setState({ advancedOpen: !open }),
+        };
+      }
+      const isActive = active === d.id;
+      return {
+        ...d,
+        isActive,
+        iconColor: isActive ? '#6c65ea' : '#6e6b86',
+        style: this.itemStyle(isActive),
+        hoverStyle: this.hoverStyle(isActive),
+        onClick: () => { if (d.url) { window.location.href = d.url; } else { this.setState({ active: d.id }); } },
+      };
+    });
+
+    const settingsActive = active === 'settings';
+    const helpActive = active === 'helpcenter';
+    return {
+      items,
+      settingsStyle: this.itemStyle(settingsActive),
+      settingsHover: this.hoverStyle(settingsActive),
+      settingsIconColor: settingsActive ? '#6c65ea' : '#6e6b86',
+      helpStyle: this.itemStyle(helpActive),
+      helpHover: this.hoverStyle(helpActive),
+      helpIconColor: helpActive ? '#6c65ea' : '#6e6b86',
+      onHelp: () => { window.location.href = 'HelpCenter.html'; },
+      wsHover: { background: 'rgba(255,255,255,0.9)' },
+      onSettings: () => this.setState({ active: 'settings' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
